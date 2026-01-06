@@ -1,10 +1,11 @@
 import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle, Plus } from "lucide-react";
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -14,9 +15,25 @@ export default function AdminHomophones() {
   const [selectedHomophone, setSelectedHomophone] = useState<any>(null);
   const [auditOpinion, setAuditOpinion] = useState("");
   const [auditAction, setAuditAction] = useState<"approve" | "reject">("approve");
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [entryId, setEntryId] = useState("");
+  const [homophoneText, setHomophoneText] = useState("");
 
   const utils = trpc.useUtils();
   const { data: pendingHomophones, isLoading } = trpc.homophone.getPending.useQuery();
+
+  const createMutation = trpc.homophone.create.useMutation({
+    onSuccess: () => {
+      toast.success("谐音提交成功，等待审核");
+      setIsAddDialogOpen(false);
+      setEntryId("");
+      setHomophoneText("");
+      utils.homophone.getPending.invalidate();
+    },
+    onError: (error) => {
+      toast.error("提交失败：" + error.message);
+    },
+  });
 
   const auditMutation = trpc.homophone.audit.useMutation({
     onSuccess: () => {
@@ -29,6 +46,17 @@ export default function AdminHomophones() {
       toast.error("审核失败：" + error.message);
     },
   });
+
+  const handleSubmitHomophone = () => {
+    if (!entryId || !homophoneText) {
+      toast.error("请填写所有字段");
+      return;
+    }
+    createMutation.mutate({
+      entryId: parseInt(entryId),
+      homophoneText: homophoneText.trim(),
+    });
+  };
 
   const handleAudit = () => {
     if (!selectedHomophone) return;
@@ -43,9 +71,65 @@ export default function AdminHomophones() {
   return (
     <DashboardLayout>
       <div className="space-y-8">
-        <div>
-          <h1 className="text-3xl font-bold">谐音审核</h1>
-          <p className="text-muted-foreground mt-2">审核待处理的谐音记忆</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">谐音管理</h1>
+            <p className="text-muted-foreground mt-2">提交和审核谐音记忆</p>
+          </div>
+          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                提交谐音
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>提交新谐音</DialogTitle>
+                <DialogDescription>为词条添加谐音记忆</DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="entryId">词条ID *</Label>
+                  <Input
+                    id="entryId"
+                    type="number"
+                    value={entryId}
+                    onChange={(e) => setEntryId(e.target.value)}
+                    placeholder="输入词条ID"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    提示：先在词库管理中查找词条ID
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="homophoneText">谐音内容 *</Label>
+                  <Textarea
+                    id="homophoneText"
+                    value={homophoneText}
+                    onChange={(e) => setHomophoneText(e.target.value)}
+                    placeholder="例如：apple → 阿婆"
+                    rows={3}
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setIsAddDialogOpen(false);
+                    setEntryId("");
+                    setHomophoneText("");
+                  }}
+                >
+                  取消
+                </Button>
+                <Button onClick={handleSubmitHomophone} disabled={createMutation.isPending}>
+                  {createMutation.isPending ? "提交中..." : "提交"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {isLoading ? (

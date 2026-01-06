@@ -32,6 +32,22 @@ export const appRouter = router({
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
       return { success: true } as const;
     }),
+    // 用户注册（仅Manus OAuth用户，此处保留以便未来扩展）
+    register: publicProcedure
+      .input(
+        z.object({
+          email: z.string().email().optional(),
+          name: z.string().optional(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        // 当前系统使用Manus OAuth，注册在首次登录时自动完成
+        // 此API保留以便未来扩展自定义注册逻辑
+        if (!ctx.user) {
+          throw new TRPCError({ code: "UNAUTHORIZED", message: "请先登录" });
+        }
+        return { success: true, message: "注册成功" };
+      }),
   }),
 
   // ==================== 翻译查询相关 ====================
@@ -258,8 +274,8 @@ export const appRouter = router({
       return result;
     }),
 
-    // 提交谐音（管理员）
-    create: adminProcedure
+    // 提交谐音（所有登录用户）
+    create: protectedProcedure
       .input(
         z.object({
           entryId: z.number(),

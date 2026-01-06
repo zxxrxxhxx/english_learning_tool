@@ -2,8 +2,8 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, ChevronRight } from "lucide-react";
-import { Link } from "wouter";
+import { User, ChevronRight } from "lucide-react";
+import { Sidebar } from "@/components/Sidebar";
 import { trpc } from "@/lib/trpc";
 import { useState } from "react";
 
@@ -18,107 +18,94 @@ export default function Categories() {
   );
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* 顶部导航 */}
-      <header className="border-b backdrop-blur-sm sticky top-0 z-50 bg-background/80">
-        <div className="container py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <BookOpen className="w-6 h-6" />
-              <h1 className="text-xl font-bold">英语学习工具</h1>
-            </div>
-            <nav className="flex items-center gap-3">
-              <Link href="/">
-                <Button variant="ghost" size="sm">首页</Button>
-              </Link>
-              {isAuthenticated && (
-                <Link href="/history">
-                  <Button variant="ghost" size="sm">查询历史</Button>
-                </Link>
-              )}
-              {user?.role === "admin" && (
-                <Link href="/admin">
-                  <Button variant="outline" size="sm">管理</Button>
-                </Link>
-              )}
-              {isAuthenticated ? (
-                <span className="text-sm text-muted-foreground">{user?.name}</span>
-              ) : (
-                <a href={getLoginUrl()}>
-                  <Button size="sm">登录</Button>
-                </a>
-              )}
-            </nav>
+    <div className="flex h-screen">
+      {/* 左侧边栏 */}
+      <Sidebar />
+
+      {/* 主内容区 */}
+      <div className="flex-1 flex flex-col">
+        {/* 顶部栏 */}
+        <header className="border-b h-14 flex items-center justify-between px-6">
+          <h1 className="text-lg font-semibold">分类学习</h1>
+          <div className="flex items-center gap-3">
+            {isAuthenticated ? (
+              <div className="flex items-center gap-2 text-sm">
+                <User className="w-4 h-4" />
+                <span>{user?.name}</span>
+              </div>
+            ) : (
+              <a href={getLoginUrl()}>
+                <Button size="sm">登录</Button>
+              </a>
+            )}
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* 主内容 */}
-      <main className="flex-1 py-8">
-        <div className="container">
-          <h2 className="text-2xl font-bold mb-6">分类学习</h2>
-
-          {isLoading ? (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">加载中...</p>
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {categories?.map((category: any) => (
-                <Card key={category.id} className="hover:bg-accent transition-colors cursor-pointer">
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between text-base">
-                      {category.name}
-                      <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {category.children && category.children.length > 0 && (
-                      <div className="space-y-1">
-                        {category.children.slice(0, 3).map((child: any) => (
-                          <Button
-                            key={child.id}
-                            variant="ghost"
-                            size="sm"
-                            className="w-full justify-start text-sm h-8"
-                            onClick={() => setSelectedCategory(child.id)}
-                          >
-                            {child.name}
-                          </Button>
-                        ))}
-                        {category.children.length > 3 && (
-                          <p className="text-xs text-muted-foreground text-center pt-1">
-                            还有 {category.children.length - 3} 个...
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-
-          {/* 高频词展示 */}
-          {selectedCategory && topEntries && topEntries.length > 0 && (
-            <div className="mt-8">
-              <h3 className="text-xl font-bold mb-4">该分类高频词TOP20</h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {topEntries.map((entry: any) => (
-                  <Card key={entry.id}>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-base">{entry.englishText}</CardTitle>
+        {/* 主内容 */}
+        <main className="flex-1 overflow-auto p-6">
+          <div className="container max-w-6xl">
+            {isLoading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">加载中...</p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {categories?.map((category: any) => (
+                  <Card key={category.id} className="hover:bg-accent/50 transition-colors">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="flex items-center justify-between text-base">
+                        {category.name}
+                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-muted-foreground">{entry.chineseTranslation}</p>
+                      {category.children && category.children.length > 0 && (
+                        <div className="space-y-1">
+                          {category.children.slice(0, 3).map((child: any) => (
+                            <Button
+                              key={child.id}
+                              variant="ghost"
+                              size="sm"
+                              className="w-full justify-start text-sm h-8"
+                              onClick={() => setSelectedCategory(child.id)}
+                            >
+                              {child.name}
+                            </Button>
+                          ))}
+                          {category.children.length > 3 && (
+                            <p className="text-xs text-muted-foreground text-center pt-1">
+                              还有 {category.children.length - 3} 个...
+                            </p>
+                          )}
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 ))}
               </div>
-            </div>
-          )}
-        </div>
-      </main>
+            )}
+
+            {/* 高频词展示 */}
+            {selectedCategory && topEntries && topEntries.length > 0 && (
+              <div className="mt-8">
+                <h3 className="text-lg font-semibold mb-4">该分类高频词TOP20</h3>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {topEntries.map((entry: any) => (
+                    <Card key={entry.id}>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-sm">{entry.englishText}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-xs text-muted-foreground">{entry.chineseTranslation}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

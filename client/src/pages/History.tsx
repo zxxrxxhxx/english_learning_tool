@@ -1,7 +1,7 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Trash2 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
@@ -41,25 +41,25 @@ export default function History() {
   });
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen flex flex-col">
       {/* 顶部导航 */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container py-4">
+      <header className="border-b backdrop-blur-sm sticky top-0 z-50 bg-background/80">
+        <div className="container py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <BookOpen className="w-8 h-8 text-primary" />
-              <h1 className="text-2xl font-bold text-primary">英语学习工具</h1>
+              <BookOpen className="w-6 h-6" />
+              <h1 className="text-xl font-bold">英语学习工具</h1>
             </div>
-            <nav className="flex items-center gap-4">
+            <nav className="flex items-center gap-3">
               <Link href="/">
-                <Button variant="ghost">首页</Button>
+                <Button variant="ghost" size="sm">首页</Button>
               </Link>
               <Link href="/categories">
-                <Button variant="ghost">分类学习</Button>
+                <Button variant="ghost" size="sm">分类学习</Button>
               </Link>
               {user?.role === "admin" && (
                 <Link href="/admin">
-                  <Button variant="outline">管理后台</Button>
+                  <Button variant="outline" size="sm">管理</Button>
                 </Link>
               )}
               <span className="text-sm text-muted-foreground">{user?.name}</span>
@@ -71,11 +71,12 @@ export default function History() {
       {/* 主内容 */}
       <main className="flex-1 py-8">
         <div className="container max-w-4xl">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold">查询历史</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold">查询历史</h2>
             {histories && histories.length > 0 && (
               <Button
                 variant="destructive"
+                size="sm"
                 onClick={() => {
                   if (confirm("确定要清空所有历史记录吗？")) {
                     clearMutation.mutate();
@@ -94,22 +95,23 @@ export default function History() {
               <p className="text-muted-foreground">加载中...</p>
             </div>
           ) : histories && histories.length > 0 ? (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {histories.map((history: any) => (
                 <Card key={history.id}>
-                  <CardHeader>
+                  <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <CardTitle className="text-xl">
+                        <CardTitle className="text-lg">
                           {history.entry?.englishText || "（已删除）"}
                         </CardTitle>
-                        <CardDescription>
+                        <p className="text-sm text-muted-foreground mt-1">
                           {history.entry?.chineseTranslation}
-                        </CardDescription>
+                        </p>
                       </div>
                       <Button
                         variant="ghost"
                         size="icon"
+                        className="h-8 w-8"
                         onClick={() => deleteMutation.mutate({ historyId: history.id })}
                         disabled={deleteMutation.isPending}
                       >
@@ -117,9 +119,9 @@ export default function History() {
                       </Button>
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      查询时间：{format(new Date(history.queryTime), "yyyy-MM-dd HH:mm:ss")}
+                  <CardContent className="pt-0">
+                    <p className="text-xs text-muted-foreground">
+                      {format(new Date(history.queryTime), "yyyy-MM-dd HH:mm:ss")}
                     </p>
                   </CardContent>
                 </Card>
@@ -128,9 +130,9 @@ export default function History() {
           ) : (
             <Card>
               <CardContent className="py-12 text-center">
-                <p className="text-muted-foreground">暂无查询历史</p>
+                <p className="text-muted-foreground mb-4">暂无查询历史</p>
                 <Link href="/">
-                  <Button className="mt-4">开始查询</Button>
+                  <Button>开始查询</Button>
                 </Link>
               </CardContent>
             </Card>

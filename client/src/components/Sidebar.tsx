@@ -16,16 +16,27 @@ export function Sidebar({ className }: SidebarProps) {
   ];
 
   return (
-    <aside className={cn("w-16 border-r flex flex-col items-center py-4 gap-6", className)}>
+    <aside 
+      className={cn(
+        "w-16 border-r flex flex-col items-center py-4 gap-6 flex-shrink-0 bg-background",
+        className
+      )}
+    >
       {/* Logo */}
       <Link href="/">
-        <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors cursor-pointer">
+        <div 
+          className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md"
+          title="英语学习工具"
+        >
           <BookOpen className="w-5 h-5" />
         </div>
       </Link>
 
+      {/* 分隔线 */}
+      <div className="w-8 h-px bg-border" />
+
       {/* 导航项 */}
-      <nav className="flex flex-col gap-2 flex-1">
+      <nav className="flex flex-col gap-3 flex-1">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = location === item.href;
@@ -34,20 +45,31 @@ export function Sidebar({ className }: SidebarProps) {
             <Link key={item.href} href={item.href}>
               <div
                 className={cn(
-                  "flex flex-col items-center justify-center w-12 h-12 rounded-lg transition-colors cursor-pointer group relative",
+                  "flex flex-col items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 cursor-pointer group relative",
                   isActive
-                    ? "bg-accent text-accent-foreground"
-                    : "hover:bg-accent/50 text-muted-foreground hover:text-foreground"
+                    ? "bg-primary text-primary-foreground shadow-md"
+                    : "hover:bg-accent text-muted-foreground hover:text-foreground"
                 )}
                 title={item.label}
               >
-                <Icon className="w-5 h-5" />
-                <span className="text-[10px] mt-0.5">{item.label}</span>
+                <Icon className={cn(
+                  "w-5 h-5 transition-transform duration-200",
+                  !isActive && "group-hover:scale-110"
+                )} />
+                <span className="text-[10px] mt-0.5 font-medium">{item.label}</span>
+                
+                {/* Active indicator */}
+                {isActive && (
+                  <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />
+                )}
               </div>
             </Link>
           );
         })}
       </nav>
+
+      {/* 底部占位 */}
+      <div className="h-4" />
     </aside>
   );
 }

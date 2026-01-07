@@ -1,12 +1,14 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { User, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { User, Trash2, Loader2, History as HistoryIcon, Search } from "lucide-react";
 import { Sidebar } from "@/components/Sidebar";
 import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { zhCN } from "date-fns/locale";
 
 export default function History() {
   const { user, isAuthenticated } = useAuth();
@@ -40,68 +42,100 @@ export default function History() {
     },
   });
 
+  const handleClearAll = () => {
+    if (confirm("确定要清空所有历史记录吗？此操作不可恢复。")) {
+      clearMutation.mutate();
+    }
+  };
+
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-background">
       {/* 左侧边栏 */}
       <Sidebar />
 
       {/* 主内容区 */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* 顶部栏 */}
-        <header className="border-b h-14 flex items-center justify-between px-6">
+        <header className="border-b h-14 flex items-center justify-between px-6 flex-shrink-0">
           <h1 className="text-lg font-semibold">查询历史</h1>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 text-sm">
               <User className="w-4 h-4" />
-              <span>{user?.name}</span>
+              <span className="max-w-[120px] truncate">{user?.name}</span>
             </div>
           </div>
         </header>
 
         {/* 主内容 */}
-        <main className="flex-1 overflow-auto p-6">
-          <div className="container max-w-4xl">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold">历史记录</h2>
+        <main className="flex-1 overflow-auto">
+          <div className="container max-w-4xl py-8 px-4">
+            {/* 标题区域 */}
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-3xl font-bold tracking-tight mb-2">
+                  查询历史
+                </h2>
+                <p className="text-muted-foreground">
+                  {histories && histories.length > 0 
+                    ? `共 ${histories.length} 条记录`
+                    : "暂无查询记录"
+                  }
+                </p>
+              </div>
               {histories && histories.length > 0 && (
                 <Button
                   variant="destructive"
                   size="sm"
-                  onClick={() => {
-                    if (confirm("确定要清空所有历史记录吗？")) {
-                      clearMutation.mutate();
-                    }
-                  }}
+                  onClick={handleClearAll}
                   disabled={clearMutation.isPending}
                 >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  清空全部
+                  {clearMutation.isPending ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      清空中
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      清空全部
+                    </>
+                  )}
                 </Button>
               )}
             </div>
 
             {isLoading ? (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">加载中...</p>
+              <div className="flex items-center justify-center py-20">
+                <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
               </div>
             ) : histories && histories.length > 0 ? (
               <div className="space-y-3">
                 {histories.map((history: any) => (
-                  <Card key={history.id}>
+                  <Card 
+                    key={history.id}
+                    className="hover:shadow-md transition-shadow"
+                  >
                     <CardHeader className="pb-3">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <CardTitle className="text-base">
-                            {history.entry?.englishText || "（已删除）"}
-                          </CardTitle>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            {history.entry?.chineseTranslation}
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-2">
+                            <CardTitle className="text-lg">
+                              {history.entry?.englishText || "（已删除）"}
+                            </CardTitle>
+                            {history.entry?.ipa && (
+                              <span className="text-sm font-mono text-muted-foreground">
+                                {history.entry.ipa}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-sm text-muted-foreground line-clamp-2">
+                            {history.entry?.chineseTranslation || "词条已被删除"}
                           </p>
                         </div>
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8"
+                          className="h-9 w-9 flex-shrink-0"
                           onClick={() => deleteMutation.mutate({ historyId: history.id })}
                           disabled={deleteMutation.isPending}
                         >
@@ -110,18 +144,34 @@ export default function History() {
                       </div>
                     </CardHeader>
                     <CardContent className="pt-0">
-                      <p className="text-xs text-muted-foreground">
-                        {format(new Date(history.queryTime), "yyyy-MM-dd HH:mm:ss")}
-                      </p>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <HistoryIcon className="w-3 h-3" />
+                        <span>
+                          {format(new Date(history.queryTime), "yyyy年MM月dd日 HH:mm", { locale: zhCN })}
+                        </span>
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
               </div>
             ) : (
-              <Card>
-                <CardContent className="py-12 text-center">
-                  <p className="text-muted-foreground mb-4">暂无查询历史</p>
-                  <Button onClick={() => setLocation("/")}>开始查询</Button>
+              <Card className="shadow-lg">
+                <CardContent className="py-20 text-center">
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
+                      <Search className="w-8 h-8 text-muted-foreground" />
+                    </div>
+                    <div>
+                      <p className="text-lg font-semibold mb-2">暂无查询历史</p>
+                      <p className="text-sm text-muted-foreground mb-6">
+                        开始查询单词，记录会自动保存在这里
+                      </p>
+                      <Button onClick={() => setLocation("/")}>
+                        <Search className="w-4 h-4 mr-2" />
+                        开始查询
+                      </Button>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             )}

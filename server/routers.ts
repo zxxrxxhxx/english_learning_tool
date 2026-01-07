@@ -401,6 +401,36 @@ export const appRouter = router({
       return await db.getAllUsers();
     }),
 
+    // 手动创建用户
+    create: adminProcedure
+      .input(
+        z.object({
+          openId: z.string().min(1, "用户ID不能为空"),
+          name: z.string().min(1, "姓名不能为空"),
+          email: z.string().email("请输入有效的邮箱地址").optional(),
+          role: z.enum(["user", "admin"]).default("user"),
+        })
+      )
+      .mutation(async ({ input }) => {
+        // 检查openId是否已存在
+        const existingUser = await db.getUserByOpenId(input.openId);
+        if (existingUser) {
+          throw new TRPCError({ code: "CONFLICT", message: "用户ID已存在" });
+        }
+
+        // 创建用户
+        await db.upsertUser({
+          openId: input.openId,
+          name: input.name,
+          email: input.email || null,
+          role: input.role,
+          loginMethod: "manual",
+          lastSignedIn: new Date(),
+        });
+
+        return { success: true, message: "用户创建成功" };
+      }),
+
     // 禁用/启用用户
     toggleDisabled: adminProcedure
       .input(z.object({ userId: z.number(), isDisabled: z.boolean() }))

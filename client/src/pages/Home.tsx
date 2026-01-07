@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Search, User, Plus, Loader2 } from "lucide-react";
+import { Search, User, Plus, Loader2, Info } from "lucide-react";
 import { Sidebar } from "@/components/Sidebar";
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
@@ -61,6 +62,11 @@ export default function Home() {
   };
 
   const handleSubmitHomophone = () => {
+    if (!isAuthenticated) {
+      toast.error("请先登录后再提交谐音");
+      return;
+    }
+    
     if (!homophoneText.trim()) {
       toast.error("请输入谐音内容");
       return;
@@ -74,6 +80,15 @@ export default function Home() {
       entryId: searchResult.entry.id,
       homophoneText: homophoneText.trim(),
     });
+  };
+
+  const handleHomophoneButtonClick = () => {
+    if (!isAuthenticated) {
+      toast.info("请先登录后再提交谐音");
+      window.location.href = getLoginUrl();
+      return;
+    }
+    setIsHomophoneDialogOpen(true);
   };
 
   // 更新搜索结果
@@ -105,7 +120,7 @@ export default function Home() {
               </div>
             ) : (
               <a href={getLoginUrl()}>
-                <Button size="sm">登录</Button>
+                <Button size="sm" variant="outline">登录</Button>
               </a>
             )}
           </div>
@@ -124,6 +139,16 @@ export default function Home() {
                   预存3万+核心词库，支持音标、音节划分和人工审核谐音
                 </p>
               </div>
+
+              {/* 未登录提示 */}
+              {!isAuthenticated && (
+                <Alert className="border-primary/50 bg-primary/5">
+                  <Info className="h-4 w-4" />
+                  <AlertDescription>
+                    您可以直接查询词条，<a href={getLoginUrl()} className="underline font-medium hover:text-primary">登录后</a>可使用历史记录和提交谐音等功能
+                  </AlertDescription>
+                </Alert>
+              )}
 
               {/* 搜索框 */}
               <div className="flex gap-2">
@@ -170,17 +195,15 @@ export default function Home() {
                           </p>
                         )}
                       </div>
-                      {isAuthenticated && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setIsHomophoneDialogOpen(true)}
-                          className="ml-4"
-                        >
-                          <Plus className="w-4 h-4 mr-1" />
-                          提交谐音
-                        </Button>
-                      )}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleHomophoneButtonClick}
+                        className="ml-4"
+                      >
+                        <Plus className="w-4 h-4 mr-1" />
+                        提交谐音
+                      </Button>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -238,17 +261,17 @@ export default function Home() {
                     )}
 
                     {/* 无谐音提示 */}
-                    {(!searchResult.homophones || searchResult.homophones.length === 0) && isAuthenticated && (
+                    {(!searchResult.homophones || searchResult.homophones.length === 0) && (
                       <div className="pt-4 border-t">
                         <div className="text-center py-6 text-muted-foreground">
                           <p className="mb-3">暂无谐音记忆</p>
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => setIsHomophoneDialogOpen(true)}
+                            onClick={handleHomophoneButtonClick}
                           >
                             <Plus className="w-4 h-4 mr-2" />
-                            成为第一个提交谐音的人
+                            {isAuthenticated ? "成为第一个提交谐音的人" : "登录后提交谐音"}
                           </Button>
                         </div>
                       </div>

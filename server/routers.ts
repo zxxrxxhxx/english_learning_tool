@@ -366,20 +366,11 @@ export const appRouter = router({
             rejectionReason: input.opinion,
           });
         } else {
-          // 检查是否达到通过条件（至少2名审核员通过）
-          const approvalRecords = existingRecords.filter(r => r.action === "approve");
-          const newApprovalCount = approvalRecords.length + 1;
-
-          if (newApprovalCount >= 2) {
-            await db.updateHomophone(input.homophoneId, {
-              auditStatus: "approved",
-              approvalCount: newApprovalCount,
-            });
-          } else {
-            await db.updateHomophone(input.homophoneId, {
-              approvalCount: newApprovalCount,
-            });
-          }
+          // 单人审核：1个管理员通过即可
+          await db.updateHomophone(input.homophoneId, {
+            auditStatus: "approved",
+            approvalCount: 1,
+          });
         }
 
         return { success: true };
@@ -408,14 +399,24 @@ export const appRouter = router({
           openId: z.string().min(1, "用户ID不能为空"),
           name: z.string().min(1, "姓名不能为空"),
           email: z.string().email("请输入有效的邮箱地址").optional(),
+          password: z.string().min(6, "密码至少6位").optional(),
           role: z.enum(["user", "admin"]).default("user"),
         })
       )
       .mutation(async ({ input }) => {
+        const bcrypt = await import("bcryptjs");
+        
         // 检查openId是否已存在
         const existingUser = await db.getUserByOpenId(input.openId);
         if (existingUser) {
           throw new TRPCError({ code: "CONFLICT", message: "用户ID已存在" });
+        }
+
+        // 如果提供了密码，加密
+        let passwordHash: string | null = null;
+        if (input.password) {
+          const salt = await bcrypt.genSalt(10);
+          passwordHash = await bcrypt.hash(input.password, salt);
         }
 
         // 创建用户
@@ -423,12 +424,50 @@ export const appRouter = router({
           openId: input.openId,
           name: input.name,
           email: input.email || null,
+          passwordHash,
           role: input.role,
           loginMethod: "manual",
           lastSignedIn: new Date(),
         });
 
         return { success: true, message: "用户创建成功" };
+      }),
+
+    // 编辑用户
+    update: adminProcedure
+      .input(
+        z.object({
+          userId: z.number(),
+          name: z.string().min(1, "姓名不能为空").optional(),
+          email: z.string().email("请输入有效的邮箱地址").optional().nullable(),
+          role: z.enum(["user", "admin", "auditor"]).optional(),
+          password: z.string().min(6, "密码至少6位").optional(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        const bcrypt = await import("bcryptjs");
+        const updateData: any = {};
+        
+        if (input.name !== undefined) updateData.name = input.name;
+        if (input.email !== undefined) updateData.email = input.email;
+        if (input.role !== undefined) updateData.role = input.role;
+        
+        // 如果提供了密码，加密后更新
+        if (input.password) {
+          const salt = await bcrypt.genSalt(10);
+          updateData.passwordHash = await bcrypt.hash(input.password, salt);
+        }
+        
+        await db.updateUser(input.userId, updateData);
+        return { success: true, message: "用户信息已更新" };
+      }),
+
+    // 删除用户
+    delete: adminProcedure
+      .input(z.object({ userId: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteUser(input.userId);
+        return { success: true, message: "用户已删除" };
       }),
 
     // 禁用/启用用户

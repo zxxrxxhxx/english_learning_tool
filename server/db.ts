@@ -128,6 +128,20 @@ export async function updateUserDisabledStatus(userId: number, isDisabled: boole
   await db.update(users).set({ isDisabled: isDisabled ? 1 : 0 }).where(eq(users.id, userId));
 }
 
+export async function updateUser(userId: number, data: Partial<InsertUser>) {
+  const db = await getDb();
+  if (!db) return;
+
+  await db.update(users).set(data).where(eq(users.id, userId));
+}
+
+export async function deleteUser(userId: number) {
+  const db = await getDb();
+  if (!db) return;
+
+  await db.delete(users).where(eq(users.id, userId));
+}
+
 // ==================== 分类相关 ====================
 
 export async function getAllCategories() {

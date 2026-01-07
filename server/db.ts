@@ -224,8 +224,10 @@ export async function createEnglishEntry(entry: InsertEnglishEntry) {
   const db = await getDb();
   if (!db) return null;
 
-  const result = await db.insert(englishEntries).values(entry) as any;
-  return Number(result.insertId);
+  const result = await db.insert(englishEntries).values(entry);
+  // MySQL driver returns insertId in different formats
+  const insertId = (result as any)[0]?.insertId || (result as any).insertId;
+  return insertId ? Number(insertId) : null;
 }
 
 export async function updateEnglishEntry(id: number, data: Partial<InsertEnglishEntry>) {

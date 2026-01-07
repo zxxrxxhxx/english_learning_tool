@@ -5,6 +5,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import * as db from "./db";
+import { getEnglishEntriesWithPagination } from "./db-pagination";
 
 // 管理员权限中间件
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -192,17 +193,40 @@ export const appRouter = router({
 
   // ==================== 词库管理（管理员） ====================
   entry: router({
-    // 获取词条列表
+    // 获取词条列表（管理员）
     list: adminProcedure
       .input(
         z.object({
           page: z.number().default(1),
-          pageSize: z.number().default(50),
+          pageSize: z.number().default(20),
+          search: z.string().optional(),
+          categoryId: z.number().optional(),
         })
       )
       .query(async ({ input }) => {
-        // TODO: 实现分页逻辑
-        return [];
+        const entries = await getEnglishEntriesWithPagination({
+          page: input.page,
+          pageSize: input.pageSize,
+          search: input.search,
+          categoryId: input.categoryId,
+        });
+        
+        // 为每个词条获取谐音
+        const result = [];
+        for (const entry of entries.data) {
+          const homophones = await db.getHomophonesByEntryId(entry.id);
+          result.push({
+            ...entry,
+            homophones,
+          });
+        }
+        
+        return {
+          data: result,
+          total: entries.total,
+          page: input.page,
+          pageSize: input.pageSize,
+        };
       }),
 
     // 创建词条

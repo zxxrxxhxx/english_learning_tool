@@ -214,13 +214,40 @@ export const appRouter = router({
           ipa: z.string().optional(),
           syllables: z.string().optional(),
           categoryId: z.number(),
+          homophoneText: z.string().optional(), // 谐音字段
         })
       )
-      .mutation(async ({ input }) => {
-        return await db.createEnglishEntry({
-          ...input,
+      .mutation(async ({ input, ctx }) => {
+        const { homophoneText, ...entryData } = input;
+        
+        // 创建词条
+        const entryId = await db.createEnglishEntry({
+          ...entryData,
           queryCount: 0,
         });
+        
+        // 如果提供了谐音，自动创建并审核通过
+        if (homophoneText && homophoneText.trim() && entryId) {
+          const homophoneId = await db.createHomophone({
+            entryId,
+            homophoneText: homophoneText.trim(),
+            auditStatus: 'approved', // 管理员添加的谐音直接通过
+            submitterId: ctx.user.id,
+            approvalCount: 1,
+          });
+          
+          // 添加审核记录
+          if (homophoneId) {
+            await db.createAuditRecord({
+              homophoneId,
+              auditorId: ctx.user.id,
+              action: 'approve',
+              opinion: '管理员添加词条时直接创建',
+            });
+          }
+        }
+        
+        return { success: true, entryId };
       }),
 
     // 更新词条

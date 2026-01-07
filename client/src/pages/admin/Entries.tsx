@@ -18,6 +18,7 @@ export default function AdminEntries() {
     ipa: "",
     syllables: "",
     categoryId: 1,
+    homophoneText: "",
   });
 
   const utils = trpc.useUtils();
@@ -32,6 +33,7 @@ export default function AdminEntries() {
         ipa: "",
         syllables: "",
         categoryId: 1,
+        homophoneText: "",
       });
     },
     onError: (error) => {
@@ -112,6 +114,20 @@ export default function AdminEntries() {
                     value={formData.categoryId}
                     onChange={(e) => setFormData({ ...formData, categoryId: parseInt(e.target.value) })}
                   />
+                </div>
+                <div>
+                  <Label htmlFor="homophoneText">谐音</Label>
+                  <Textarea
+                    id="homophoneText"
+                    value={formData.homophoneText}
+                    onChange={(e) => setFormData({ ...formData, homophoneText: e.target.value })}
+                    placeholder="例如：阿婆"
+                    rows={3}
+                    className="resize-none"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    管理员添加的谐音将自动审核通过
+                  </p>
                 </div>
               </div>
               <DialogFooter>

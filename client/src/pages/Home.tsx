@@ -14,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Search, User, Plus, Loader2, Info } from "lucide-react";
+import { Search, User, Plus, Loader2, Info, LogOut } from "lucide-react";
 import { Sidebar } from "@/components/Sidebar";
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
@@ -45,6 +45,16 @@ export default function Home() {
     },
     onError: (error) => {
       toast.error("提交失败：" + error.message);
+    },
+  });
+
+  const logoutMutation = trpc.auth.logout.useMutation({
+    onSuccess: () => {
+      toast.success("已登出");
+      window.location.reload();
+    },
+    onError: (error) => {
+      toast.error("登出失败：" + error.message);
     },
   });
 
@@ -114,9 +124,24 @@ export default function Home() {
           <h1 className="text-lg font-semibold">英语词句查询</h1>
           <div className="flex items-center gap-3">
             {isAuthenticated ? (
-              <div className="flex items-center gap-2 text-sm">
-                <User className="w-4 h-4" />
-                <span className="max-w-[120px] truncate">{user?.name}</span>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 text-sm">
+                  <User className="w-4 h-4" />
+                  <span className="max-w-[120px] truncate">{user?.name}</span>
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => logoutMutation.mutate()}
+                  disabled={logoutMutation.isPending}
+                >
+                  {logoutMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                  ) : (
+                    <LogOut className="w-4 h-4 mr-1" />
+                  )}
+                  登出
+                </Button>
               </div>
             ) : (
               <a href={getLoginUrl()}>

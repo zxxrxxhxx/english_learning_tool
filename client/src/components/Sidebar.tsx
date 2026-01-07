@@ -1,4 +1,5 @@
-import { BookOpen, Search, History, FolderTree } from "lucide-react";
+import { BookOpen, Search, History, FolderTree, Sun, Moon } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 
@@ -8,6 +9,7 @@ interface SidebarProps {
 
 export function Sidebar({ className }: SidebarProps) {
   const [location] = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   const navItems = [
     { href: "/", icon: Search, label: "查询" },
@@ -68,8 +70,19 @@ export function Sidebar({ className }: SidebarProps) {
         })}
       </nav>
 
-      {/* 底部占位 */}
-      <div className="h-4" />
+      {/* 主题切换按钮 */}
+      <button
+        onClick={toggleTheme}
+        className="flex flex-col items-center justify-center w-12 h-12 rounded-xl hover:bg-accent text-muted-foreground hover:text-foreground transition-all duration-200 group"
+        title={theme === "dark" ? "切换到浅色主题" : "切换到深色主题"}
+      >
+        {theme === "dark" ? (
+          <Sun className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+        ) : (
+          <Moon className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+        )}
+        <span className="text-[10px] mt-0.5 font-medium">主题</span>
+      </button>
     </aside>
   );
 }

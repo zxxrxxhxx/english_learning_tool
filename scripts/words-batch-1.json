@@ -1,0 +1,863 @@
+[
+  {
+    "english": "the",
+    "chinese": "这；那（定冠词）",
+    "ipa": "/ðə/",
+    "syllables": "the",
+    "homophone": "的"
+  },
+  {
+    "english": "be",
+    "chinese": "是；存在",
+    "ipa": "/biː/",
+    "syllables": "be",
+    "homophone": "币"
+  },
+  {
+    "english": "to",
+    "chinese": "到；向（介词）",
+    "ipa": "/tuː/",
+    "syllables": "to",
+    "homophone": "吐"
+  },
+  {
+    "english": "of",
+    "chinese": "的；属于",
+    "ipa": "/ʌv/",
+    "syllables": "of",
+    "homophone": "俄物"
+  },
+  {
+    "english": "and",
+    "chinese": "和；与",
+    "ipa": "/ænd/",
+    "syllables": "and",
+    "homophone": "安德"
+  },
+  {
+    "english": "a",
+    "chinese": "一个（不定冠词）",
+    "ipa": "/ə/",
+    "syllables": "a",
+    "homophone": "啊"
+  },
+  {
+    "english": "in",
+    "chinese": "在…里",
+    "ipa": "/ɪn/",
+    "syllables": "in",
+    "homophone": "印"
+  },
+  {
+    "english": "that",
+    "chinese": "那；那个",
+    "ipa": "/ðæt/",
+    "syllables": "that",
+    "homophone": "在特"
+  },
+  {
+    "english": "have",
+    "chinese": "有；拥有",
+    "ipa": "/hæv/",
+    "syllables": "have",
+    "homophone": "海物"
+  },
+  {
+    "english": "I",
+    "chinese": "我",
+    "ipa": "/aɪ/",
+    "syllables": "I",
+    "homophone": "爱"
+  },
+  {
+    "english": "it",
+    "chinese": "它",
+    "ipa": "/ɪt/",
+    "syllables": "it",
+    "homophone": "亿特"
+  },
+  {
+    "english": "for",
+    "chinese": "为了；给",
+    "ipa": "/fɔː/",
+    "syllables": "for",
+    "homophone": "否"
+  },
+  {
+    "english": "not",
+    "chinese": "不",
+    "ipa": "/nɒt/",
+    "syllables": "not",
+    "homophone": "闹特"
+  },
+  {
+    "english": "on",
+    "chinese": "在…上",
+    "ipa": "/ɒn/",
+    "syllables": "on",
+    "homophone": "奥恩"
+  },
+  {
+    "english": "with",
+    "chinese": "和…一起",
+    "ipa": "/wɪð/",
+    "syllables": "with",
+    "homophone": "喂的"
+  },
+  {
+    "english": "he",
+    "chinese": "他",
+    "ipa": "/hiː/",
+    "syllables": "he",
+    "homophone": "希"
+  },
+  {
+    "english": "as",
+    "chinese": "作为；像",
+    "ipa": "/æz/",
+    "syllables": "as",
+    "homophone": "爱死"
+  },
+  {
+    "english": "you",
+    "chinese": "你；你们",
+    "ipa": "/juː/",
+    "syllables": "you",
+    "homophone": "油"
+  },
+  {
+    "english": "do",
+    "chinese": "做",
+    "ipa": "/duː/",
+    "syllables": "do",
+    "homophone": "度"
+  },
+  {
+    "english": "at",
+    "chinese": "在（某处）",
+    "ipa": "/æt/",
+    "syllables": "at",
+    "homophone": "艾特"
+  },
+  {
+    "english": "this",
+    "chinese": "这；这个",
+    "ipa": "/ðɪs/",
+    "syllables": "this",
+    "homophone": "的死"
+  },
+  {
+    "english": "but",
+    "chinese": "但是",
+    "ipa": "/bʌt/",
+    "syllables": "but",
+    "homophone": "巴特"
+  },
+  {
+    "english": "his",
+    "chinese": "他的",
+    "ipa": "/hɪz/",
+    "syllables": "his",
+    "homophone": "黑子"
+  },
+  {
+    "english": "by",
+    "chinese": "通过；被",
+    "ipa": "/baɪ/",
+    "syllables": "by",
+    "homophone": "拜"
+  },
+  {
+    "english": "from",
+    "chinese": "从…来",
+    "ipa": "/frɒm/",
+    "syllables": "from",
+    "homophone": "弗罗姆"
+  },
+  {
+    "english": "they",
+    "chinese": "他们",
+    "ipa": "/ðeɪ/",
+    "syllables": "they",
+    "homophone": "得"
+  },
+  {
+    "english": "we",
+    "chinese": "我们",
+    "ipa": "/wiː/",
+    "syllables": "we",
+    "homophone": "威"
+  },
+  {
+    "english": "say",
+    "chinese": "说",
+    "ipa": "/seɪ/",
+    "syllables": "say",
+    "homophone": "赛"
+  },
+  {
+    "english": "her",
+    "chinese": "她的；她（宾格）",
+    "ipa": "/hɜː/",
+    "syllables": "her",
+    "homophone": "喝"
+  },
+  {
+    "english": "she",
+    "chinese": "她",
+    "ipa": "/ʃiː/",
+    "syllables": "she",
+    "homophone": "希"
+  },
+  {
+    "english": "or",
+    "chinese": "或；或者",
+    "ipa": "/ɔː/",
+    "syllables": "or",
+    "homophone": "奥"
+  },
+  {
+    "english": "an",
+    "chinese": "一个（不定冠词）",
+    "ipa": "/æn/",
+    "syllables": "an",
+    "homophone": "安"
+  },
+  {
+    "english": "will",
+    "chinese": "将要；意愿",
+    "ipa": "/wɪl/",
+    "syllables": "will",
+    "homophone": "喂了"
+  },
+  {
+    "english": "my",
+    "chinese": "我的",
+    "ipa": "/maɪ/",
+    "syllables": "my",
+    "homophone": "买"
+  },
+  {
+    "english": "one",
+    "chinese": "一；一个",
+    "ipa": "/wʌn/",
+    "syllables": "one",
+    "homophone": "玩"
+  },
+  {
+    "english": "all",
+    "chinese": "所有",
+    "ipa": "/ɔːl/",
+    "syllables": "all",
+    "homophone": "奥尔"
+  },
+  {
+    "english": "would",
+    "chinese": "将（过去式）",
+    "ipa": "/wʊd/",
+    "syllables": "would",
+    "homophone": "屋的"
+  },
+  {
+    "english": "there",
+    "chinese": "那里",
+    "ipa": "/ðeə/",
+    "syllables": "there",
+    "homophone": "的儿"
+  },
+  {
+    "english": "their",
+    "chinese": "他们的",
+    "ipa": "/ðeə/",
+    "syllables": "their",
+    "homophone": "的儿"
+  },
+  {
+    "english": "what",
+    "chinese": "什么",
+    "ipa": "/wɒt/",
+    "syllables": "what",
+    "homophone": "沃特"
+  },
+  {
+    "english": "so",
+    "chinese": "所以；如此",
+    "ipa": "/səʊ/",
+    "syllables": "so",
+    "homophone": "搜"
+  },
+  {
+    "english": "up",
+    "chinese": "向上",
+    "ipa": "/ʌp/",
+    "syllables": "up",
+    "homophone": "阿普"
+  },
+  {
+    "english": "out",
+    "chinese": "外面",
+    "ipa": "/aʊt/",
+    "syllables": "out",
+    "homophone": "奥特"
+  },
+  {
+    "english": "if",
+    "chinese": "如果",
+    "ipa": "/ɪf/",
+    "syllables": "if",
+    "homophone": "衣服"
+  },
+  {
+    "english": "get",
+    "chinese": "得到",
+    "ipa": "/ɡet/",
+    "syllables": "get",
+    "homophone": "盖特"
+  },
+  {
+    "english": "which",
+    "chinese": "哪个；哪些",
+    "ipa": "/wɪtʃ/",
+    "syllables": "which",
+    "homophone": "喂吃"
+  },
+  {
+    "english": "go",
+    "chinese": "去；走",
+    "ipa": "/ɡəʊ/",
+    "syllables": "go",
+    "homophone": "够"
+  },
+  {
+    "english": "me",
+    "chinese": "我（宾格）",
+    "ipa": "/miː/",
+    "syllables": "me",
+    "homophone": "米"
+  },
+  {
+    "english": "when",
+    "chinese": "何时",
+    "ipa": "/wen/",
+    "syllables": "when",
+    "homophone": "问"
+  },
+  {
+    "english": "make",
+    "chinese": "制造；使",
+    "ipa": "/meɪk/",
+    "syllables": "make",
+    "homophone": "梅克"
+  },
+  {
+    "english": "can",
+    "chinese": "能；会",
+    "ipa": "/kæn/",
+    "syllables": "can",
+    "homophone": "看"
+  },
+  {
+    "english": "like",
+    "chinese": "喜欢；像",
+    "ipa": "/laɪk/",
+    "syllables": "like",
+    "homophone": "赖克"
+  },
+  {
+    "english": "time",
+    "chinese": "时间",
+    "ipa": "/taɪm/",
+    "syllables": "time",
+    "homophone": "泰姆"
+  },
+  {
+    "english": "no",
+    "chinese": "不；没有",
+    "ipa": "/nəʊ/",
+    "syllables": "no",
+    "homophone": "诺"
+  },
+  {
+    "english": "just",
+    "chinese": "只是；刚才",
+    "ipa": "/dʒʌst/",
+    "syllables": "just",
+    "homophone": "扎斯特"
+  },
+  {
+    "english": "him",
+    "chinese": "他（宾格）",
+    "ipa": "/hɪm/",
+    "syllables": "him",
+    "homophone": "黑姆"
+  },
+  {
+    "english": "know",
+    "chinese": "知道",
+    "ipa": "/nəʊ/",
+    "syllables": "know",
+    "homophone": "诺"
+  },
+  {
+    "english": "take",
+    "chinese": "拿；取",
+    "ipa": "/teɪk/",
+    "syllables": "take",
+    "homophone": "泰克"
+  },
+  {
+    "english": "people",
+    "chinese": "人；人们",
+    "ipa": "/ˈpiːpl/",
+    "syllables": "peo-ple",
+    "homophone": "批普尔"
+  },
+  {
+    "english": "into",
+    "chinese": "进入",
+    "ipa": "/ˈɪntuː/",
+    "syllables": "in-to",
+    "homophone": "音吐"
+  },
+  {
+    "english": "year",
+    "chinese": "年",
+    "ipa": "/jɪə/",
+    "syllables": "year",
+    "homophone": "耶"
+  },
+  {
+    "english": "your",
+    "chinese": "你的；你们的",
+    "ipa": "/jɔː/",
+    "syllables": "your",
+    "homophone": "哟"
+  },
+  {
+    "english": "good",
+    "chinese": "好的",
+    "ipa": "/ɡʊd/",
+    "syllables": "good",
+    "homophone": "古德"
+  },
+  {
+    "english": "some",
+    "chinese": "一些",
+    "ipa": "/sʌm/",
+    "syllables": "some",
+    "homophone": "萨姆"
+  },
+  {
+    "english": "could",
+    "chinese": "能；可以（过去式）",
+    "ipa": "/kʊd/",
+    "syllables": "could",
+    "homophone": "库德"
+  },
+  {
+    "english": "them",
+    "chinese": "他们（宾格）",
+    "ipa": "/ðem/",
+    "syllables": "them",
+    "homophone": "的姆"
+  },
+  {
+    "english": "see",
+    "chinese": "看；看见",
+    "ipa": "/siː/",
+    "syllables": "see",
+    "homophone": "西"
+  },
+  {
+    "english": "other",
+    "chinese": "其他的",
+    "ipa": "/ˈʌðə/",
+    "syllables": "oth-er",
+    "homophone": "阿的儿"
+  },
+  {
+    "english": "than",
+    "chinese": "比；除了",
+    "ipa": "/ðæn/",
+    "syllables": "than",
+    "homophone": "的安"
+  },
+  {
+    "english": "then",
+    "chinese": "然后；那时",
+    "ipa": "/ðen/",
+    "syllables": "then",
+    "homophone": "的恩"
+  },
+  {
+    "english": "now",
+    "chinese": "现在",
+    "ipa": "/naʊ/",
+    "syllables": "now",
+    "homophone": "闹"
+  },
+  {
+    "english": "look",
+    "chinese": "看",
+    "ipa": "/lʊk/",
+    "syllables": "look",
+    "homophone": "路克"
+  },
+  {
+    "english": "only",
+    "chinese": "只有；仅仅",
+    "ipa": "/ˈəʊnli/",
+    "syllables": "on-ly",
+    "homophone": "欧尼"
+  },
+  {
+    "english": "come",
+    "chinese": "来",
+    "ipa": "/kʌm/",
+    "syllables": "come",
+    "homophone": "卡姆"
+  },
+  {
+    "english": "its",
+    "chinese": "它的",
+    "ipa": "/ɪts/",
+    "syllables": "its",
+    "homophone": "亿次"
+  },
+  {
+    "english": "over",
+    "chinese": "结束；超过",
+    "ipa": "/ˈəʊvə/",
+    "syllables": "o-ver",
+    "homophone": "欧沃"
+  },
+  {
+    "english": "think",
+    "chinese": "认为；思考",
+    "ipa": "/θɪŋk/",
+    "syllables": "think",
+    "homophone": "新克"
+  },
+  {
+    "english": "also",
+    "chinese": "也；还",
+    "ipa": "/ˈɔːlsəʊ/",
+    "syllables": "al-so",
+    "homophone": "奥尔搜"
+  },
+  {
+    "english": "back",
+    "chinese": "后面；回来",
+    "ipa": "/bæk/",
+    "syllables": "back",
+    "homophone": "拜克"
+  },
+  {
+    "english": "after",
+    "chinese": "在…之后",
+    "ipa": "/ˈɑːftə/",
+    "syllables": "af-ter",
+    "homophone": "阿福特"
+  },
+  {
+    "english": "use",
+    "chinese": "使用",
+    "ipa": "/juːz/",
+    "syllables": "use",
+    "homophone": "柚子"
+  },
+  {
+    "english": "two",
+    "chinese": "二",
+    "ipa": "/tuː/",
+    "syllables": "two",
+    "homophone": "吐"
+  },
+  {
+    "english": "how",
+    "chinese": "如何",
+    "ipa": "/haʊ/",
+    "syllables": "how",
+    "homophone": "好"
+  },
+  {
+    "english": "our",
+    "chinese": "我们的",
+    "ipa": "/aʊə/",
+    "syllables": "our",
+    "homophone": "奥尔"
+  },
+  {
+    "english": "work",
+    "chinese": "工作",
+    "ipa": "/wɜːk/",
+    "syllables": "work",
+    "homophone": "沃克"
+  },
+  {
+    "english": "first",
+    "chinese": "第一；首先",
+    "ipa": "/fɜːst/",
+    "syllables": "first",
+    "homophone": "弗斯特"
+  },
+  {
+    "english": "well",
+    "chinese": "好；健康",
+    "ipa": "/wel/",
+    "syllables": "well",
+    "homophone": "威尔"
+  },
+  {
+    "english": "way",
+    "chinese": "方法；道路",
+    "ipa": "/weɪ/",
+    "syllables": "way",
+    "homophone": "喂"
+  },
+  {
+    "english": "even",
+    "chinese": "甚至；平坦的",
+    "ipa": "/ˈiːvn/",
+    "syllables": "e-ven",
+    "homophone": "伊文"
+  },
+  {
+    "english": "new",
+    "chinese": "新的",
+    "ipa": "/njuː/",
+    "syllables": "new",
+    "homophone": "纽"
+  },
+  {
+    "english": "want",
+    "chinese": "想要",
+    "ipa": "/wɒnt/",
+    "syllables": "want",
+    "homophone": "往特"
+  },
+  {
+    "english": "because",
+    "chinese": "因为",
+    "ipa": "/bɪˈkɒz/",
+    "syllables": "be-cause",
+    "homophone": "比考斯"
+  },
+  {
+    "english": "any",
+    "chinese": "任何的",
+    "ipa": "/ˈeni/",
+    "syllables": "an-y",
+    "homophone": "艾尼"
+  },
+  {
+    "english": "these",
+    "chinese": "这些",
+    "ipa": "/ðiːz/",
+    "syllables": "these",
+    "homophone": "的易字"
+  },
+  {
+    "english": "give",
+    "chinese": "给",
+    "ipa": "/ɡɪv/",
+    "syllables": "give",
+    "homophone": "给物"
+  },
+  {
+    "english": "day",
+    "chinese": "天；白天",
+    "ipa": "/deɪ/",
+    "syllables": "day",
+    "homophone": "戴"
+  },
+  {
+    "english": "most",
+    "chinese": "最；大部分",
+    "ipa": "/məʊst/",
+    "syllables": "most",
+    "homophone": "莫斯特"
+  },
+  {
+    "english": "us",
+    "chinese": "我们（宾格）",
+    "ipa": "/ʌs/",
+    "syllables": "us",
+    "homophone": "阿斯"
+  },
+  {
+    "english": "much",
+    "chinese": "许多；非常",
+    "ipa": "/mʌtʃ/",
+    "syllables": "much",
+    "homophone": "马吃"
+  },
+  {
+    "english": "about",
+    "chinese": "关于；大约",
+    "ipa": "/əˈbaʊt/",
+    "syllables": "a-bout",
+    "homophone": "饿包特"
+  },
+  {
+    "english": "man",
+    "chinese": "男人；人类",
+    "ipa": "/mæn/",
+    "syllables": "man",
+    "homophone": "曼"
+  },
+  {
+    "english": "many",
+    "chinese": "许多",
+    "ipa": "/ˈmeni/",
+    "syllables": "man-y",
+    "homophone": "梅尼"
+  },
+  {
+    "english": "then",
+    "chinese": "那时；然后",
+    "ipa": "/ðen/",
+    "syllables": "then",
+    "homophone": "的恩"
+  },
+  {
+    "english": "world",
+    "chinese": "世界",
+    "ipa": "/wɜːld/",
+    "syllables": "world",
+    "homophone": "沃德"
+  },
+  {
+    "english": "would",
+    "chinese": "将（过去式）",
+    "ipa": "/wʊd/",
+    "syllables": "would",
+    "homophone": "屋的"
+  },
+  {
+    "english": "such",
+    "chinese": "这样的",
+    "ipa": "/sʌtʃ/",
+    "syllables": "such",
+    "homophone": "萨吃"
+  },
+  {
+    "english": "through",
+    "chinese": "穿过；通过",
+    "ipa": "/θruː/",
+    "syllables": "through",
+    "homophone": "思入"
+  },
+  {
+    "english": "down",
+    "chinese": "向下",
+    "ipa": "/daʊn/",
+    "syllables": "down",
+    "homophone": "道恩"
+  },
+  {
+    "english": "call",
+    "chinese": "打电话；呼叫",
+    "ipa": "/kɔːl/",
+    "syllables": "call",
+    "homophone": "考尔"
+  },
+  {
+    "english": "before",
+    "chinese": "在…之前",
+    "ipa": "/bɪˈfɔː/",
+    "syllables": "be-fore",
+    "homophone": "比否"
+  },
+  {
+    "english": "great",
+    "chinese": "伟大的；很棒的",
+    "ipa": "/ɡreɪt/",
+    "syllables": "great",
+    "homophone": "格瑞特"
+  },
+  {
+    "english": "where",
+    "chinese": "在哪里",
+    "ipa": "/weə/",
+    "syllables": "where",
+    "homophone": "喂儿"
+  },
+  {
+    "english": "should",
+    "chinese": "应该",
+    "ipa": "/ʃʊd/",
+    "syllables": "should",
+    "homophone": "叔的"
+  },
+  {
+    "english": "help",
+    "chinese": "帮助",
+    "ipa": "/help/",
+    "syllables": "help",
+    "homophone": "海尔普"
+  },
+  {
+    "english": "right",
+    "chinese": "正确的；右边",
+    "ipa": "/raɪt/",
+    "syllables": "right",
+    "homophone": "赖特"
+  },
+  {
+    "english": "too",
+    "chinese": "也；太",
+    "ipa": "/tuː/",
+    "syllables": "too",
+    "homophone": "吐"
+  },
+  {
+    "english": "old",
+    "chinese": "老的；旧的",
+    "ipa": "/əʊld/",
+    "syllables": "old",
+    "homophone": "欧德"
+  },
+  {
+    "english": "same",
+    "chinese": "相同的",
+    "ipa": "/seɪm/",
+    "syllables": "same",
+    "homophone": "赛姆"
+  },
+  {
+    "english": "still",
+    "chinese": "仍然；还",
+    "ipa": "/stɪl/",
+    "syllables": "still",
+    "homophone": "斯蒂尔"
+  },
+  {
+    "english": "high",
+    "chinese": "高的",
+    "ipa": "/haɪ/",
+    "syllables": "high",
+    "homophone": "嗨"
+  },
+  {
+    "english": "every",
+    "chinese": "每个",
+    "ipa": "/ˈevri/",
+    "syllables": "ev-ery",
+    "homophone": "艾弗里"
+  },
+  {
+    "english": "tell",
+    "chinese": "告诉",
+    "ipa": "/tel/",
+    "syllables": "tell",
+    "homophone": "泰尔"
+  },
+  {
+    "english": "little",
+    "chinese": "小的；少量的",
+    "ipa": "/ˈlɪtl/",
+    "syllables": "lit-tle",
+    "homophone": "利特尔"
+  }
+]

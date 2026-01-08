@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO categories (id, parentId, name, sortOrder, level, createdAt, updatedAt) \nVALUES (1, 0, '未分类', 999, 1, NOW(), NOW()) \nON DUPLICATE KEY UPDATE name = '未分类';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 22yz8u3uEu2LXwS.root --database TCayJdqFKQbJoJHLcEVX5b --execute INSERT INTO categories (id, parentId, name, sortOrder, level, createdAt, updatedAt) \nVALUES (1, 0, '未分类', 999, 1, NOW(), NOW()) \nON DUPLICATE KEY UPDATE name = '未分类';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1636
+}

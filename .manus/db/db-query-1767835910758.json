@@ -1,0 +1,13 @@
+{
+  "query": "SELECT COUNT(*) as total FROM english_entries;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 22yz8u3uEu2LXwS.root --database TCayJdqFKQbJoJHLcEVX5b --execute SELECT COUNT(*) as total FROM english_entries;",
+  "rows": [
+    {
+      "total": "104137"
+    }
+  ],
+  "messages": [],
+  "stdout": "total\n104137\n",
+  "stderr": "",
+  "execution_time_ms": 1559
+}

@@ -1,0 +1,70 @@
+{
+  "query": "SELECT englishText, chineseTranslation, ipa, categoryId FROM english_entries ORDER BY id LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 22yz8u3uEu2LXwS.root --database TCayJdqFKQbJoJHLcEVX5b --execute SELECT englishText, chineseTranslation, ipa, categoryId FROM english_entries ORDER BY id LIMIT 10;",
+  "rows": [
+    {
+      "englishText": "apple",
+      "chineseTranslation": "苹果（一种常见水果，圆形，多为红色或绿色）",
+      "ipa": "/ˈæpl/",
+      "categoryId": "15"
+    },
+    {
+      "englishText": "banana",
+      "chineseTranslation": "香蕉（一种热带水果，黄色，长条形）",
+      "ipa": "/bəˈnɑːnə/",
+      "categoryId": "15"
+    },
+    {
+      "englishText": "hello",
+      "chineseTranslation": "你好（用于打招呼或问候）",
+      "ipa": "/həˈləʊ/",
+      "categoryId": "17"
+    },
+    {
+      "englishText": "thank you",
+      "chineseTranslation": "谢谢（表达感谢的常用语）",
+      "ipa": "/θæŋk juː/",
+      "categoryId": "17"
+    },
+    {
+      "englishText": "how much",
+      "chineseTranslation": "多少钱（询问价格的常用短语）",
+      "ipa": "/haʊ mʌtʃ/",
+      "categoryId": "18"
+    },
+    {
+      "englishText": "cat",
+      "chineseTranslation": "猫咪",
+      "ipa": "kæt",
+      "categoryId": "1"
+    },
+    {
+      "englishText": "test",
+      "chineseTranslation": "测试",
+      "ipa": "/test/",
+      "categoryId": "1"
+    },
+    {
+      "englishText": "apple",
+      "chineseTranslation": "苹果",
+      "ipa": "/ˈæpl/",
+      "categoryId": "1"
+    },
+    {
+      "englishText": "banana",
+      "chineseTranslation": "香蕉",
+      "ipa": "NULL",
+      "categoryId": "1"
+    },
+    {
+      "englishText": "test",
+      "chineseTranslation": "测试",
+      "ipa": "/test/",
+      "categoryId": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "englishText\tchineseTranslation\tipa\tcategoryId\napple\t苹果（一种常见水果，圆形，多为红色或绿色）\t/ˈæpl/\t15\nbanana\t香蕉（一种热带水果，黄色，长条形）\t/bəˈnɑːnə/\t15\nhello\t你好（用于打招呼或问候）\t/həˈləʊ/\t17\nthank you\t谢谢（表达感谢的常用语）\t/θæŋk juː/\t17\nhow much\t多少钱（询问价格的常用短语）\t/haʊ mʌtʃ/\t18\ncat\t猫咪\tkæt\t1\ntest\t测试\t/test/\t1\napple\t苹果\t/ˈæpl/\t1\nbanana\t香蕉\tNULL\t1\ntest\t测试\t/test/\t1\n",
+  "stderr": "",
+  "execution_time_ms": 1563
+}

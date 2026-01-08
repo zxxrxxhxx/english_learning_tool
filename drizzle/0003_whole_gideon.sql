@@ -1,0 +1,1 @@
+ALTER TABLE `english_entries` DROP INDEX `english_text_unique`;

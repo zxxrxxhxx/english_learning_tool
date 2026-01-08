@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, index, tinyint } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, index, tinyint, unique } from "drizzle-orm/mysql-core";
 
 /**
  * 用户表 - 核心认证表
@@ -50,6 +50,8 @@ export const englishEntries = mysqlTable("english_entries", {
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 }, (table) => ({
   englishTextIdx: index("english_text_idx").on(table.englishText),
+  // 注：由于导入数据存在重复，暂不添加唯一约束
+  // englishTextUnique: unique("english_text_unique").on(table.englishText),
   categoryIdIdx: index("category_id_idx").on(table.categoryId),
   queryCountIdx: index("query_count_idx").on(table.queryCount),
 }));

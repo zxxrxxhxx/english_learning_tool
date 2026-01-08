@@ -1,0 +1,1 @@
+ALTER TABLE `english_entries` ADD CONSTRAINT `english_text_unique` UNIQUE(`englishText`);

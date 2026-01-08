@@ -1,0 +1,130 @@
+{
+  "query": "SELECT id, name, parentId, level FROM categories ORDER BY id LIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 22yz8u3uEu2LXwS.root --database TCayJdqFKQbJoJHLcEVX5b --execute SELECT id, name, parentId, level FROM categories ORDER BY id LIMIT 20;",
+  "rows": [
+    {
+      "id": "1",
+      "name": "未分类",
+      "parentId": "0",
+      "level": "1"
+    },
+    {
+      "id": "2",
+      "name": "工作英语",
+      "parentId": "0",
+      "level": "1"
+    },
+    {
+      "id": "3",
+      "name": "考试英语",
+      "parentId": "0",
+      "level": "1"
+    },
+    {
+      "id": "4",
+      "name": "兴趣英语",
+      "parentId": "0",
+      "level": "1"
+    },
+    {
+      "id": "5",
+      "name": "行业英语",
+      "parentId": "0",
+      "level": "1"
+    },
+    {
+      "id": "6",
+      "name": "购物",
+      "parentId": "1",
+      "level": "2"
+    },
+    {
+      "id": "7",
+      "name": "旅行",
+      "parentId": "1",
+      "level": "2"
+    },
+    {
+      "id": "8",
+      "name": "饮食",
+      "parentId": "1",
+      "level": "2"
+    },
+    {
+      "id": "9",
+      "name": "社交",
+      "parentId": "1",
+      "level": "2"
+    },
+    {
+      "id": "10",
+      "name": "会议",
+      "parentId": "2",
+      "level": "2"
+    },
+    {
+      "id": "11",
+      "name": "邮件",
+      "parentId": "2",
+      "level": "2"
+    },
+    {
+      "id": "12",
+      "name": "四级词汇",
+      "parentId": "3",
+      "level": "2"
+    },
+    {
+      "id": "13",
+      "name": "六级词汇",
+      "parentId": "3",
+      "level": "2"
+    },
+    {
+      "id": "14",
+      "name": "雅思词汇",
+      "parentId": "3",
+      "level": "2"
+    },
+    {
+      "id": "15",
+      "name": "水果",
+      "parentId": "8",
+      "level": "3"
+    },
+    {
+      "id": "16",
+      "name": "蔬菜",
+      "parentId": "8",
+      "level": "3"
+    },
+    {
+      "id": "17",
+      "name": "餐厅用语",
+      "parentId": "8",
+      "level": "3"
+    },
+    {
+      "id": "18",
+      "name": "询价",
+      "parentId": "6",
+      "level": "3"
+    },
+    {
+      "id": "19",
+      "name": "付款",
+      "parentId": "6",
+      "level": "3"
+    },
+    {
+      "id": "20",
+      "name": "交通",
+      "parentId": "7",
+      "level": "3"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tparentId\tlevel\n1\t未分类\t0\t1\n2\t工作英语\t0\t1\n3\t考试英语\t0\t1\n4\t兴趣英语\t0\t1\n5\t行业英语\t0\t1\n6\t购物\t1\t2\n7\t旅行\t1\t2\n8\t饮食\t1\t2\n9\t社交\t1\t2\n10\t会议\t2\t2\n11\t邮件\t2\t2\n12\t四级词汇\t3\t2\n13\t六级词汇\t3\t2\n14\t雅思词汇\t3\t2\n15\t水果\t8\t3\n16\t蔬菜\t8\t3\n17\t餐厅用语\t8\t3\n18\t询价\t6\t3\n19\t付款\t6\t3\n20\t交通\t7\t3\n",
+  "stderr": "",
+  "execution_time_ms": 1540
+}

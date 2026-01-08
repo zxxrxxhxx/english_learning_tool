@@ -6,6 +6,8 @@ import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import * as db from "./db";
 import { getEnglishEntriesWithPagination } from "./db-pagination";
+import { checkRateLimit, getClientIp, RateLimitPresets } from "./rate-limiter";
+import { sanitizeInput, detectSqlInjection, detectXss } from "./input-validator";
 
 // 管理员权限中间件
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -57,7 +59,28 @@ export const appRouter = router({
     search: publicProcedure
       .input(z.object({ text: z.string().max(50) }))
       .query(async ({ input, ctx }) => {
-        const entry = await db.searchEnglishEntry(input.text.trim().toLowerCase());
+        // API限流检查
+        const clientIp = getClientIp(ctx.req);
+        const rateLimit = checkRateLimit(clientIp, RateLimitPresets.search);
+        
+        if (!rateLimit.allowed) {
+          throw new TRPCError({
+            code: "TOO_MANY_REQUESTS",
+            message: "请求过于频繁，请稍后再试",
+          });
+        }
+        // 输入验证和清洗
+        const sanitizedText = sanitizeInput(input.text);
+        
+        // 检测SQL注入和XSS攻击
+        if (detectSqlInjection(sanitizedText) || detectXss(sanitizedText)) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "输入包含非法字符",
+          });
+        }
+        
+        const entry = await db.searchEnglishEntry(sanitizedText.trim().toLowerCase());
         
         if (!entry) {
           // 记录未收录词

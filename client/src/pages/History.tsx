@@ -4,15 +4,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, Trash2, Loader2, History as HistoryIcon, Search, LogIn } from "lucide-react";
 import { Sidebar } from "@/components/Sidebar";
-import { useLocation } from "wouter";
+import { useLocation, useRoute } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { zhCN } from "date-fns/locale";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
 
 export default function History() {
   const { user, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
+  const [searchText, setSearchText] = useState("");
 
   const utils = trpc.useUtils();
   const { data: histories, isLoading } = trpc.history.list.useQuery(
@@ -45,6 +48,16 @@ export default function History() {
       clearMutation.mutate();
     }
   };
+
+  const handleQuickSearch = (word: string) => {
+    // 跳转到首页并携带搜索关键词
+    setLocation(`/?q=${encodeURIComponent(word)}`);
+  };
+
+  // 过滤历史记录
+  const filteredHistories = histories?.filter((h: any) =>
+    !searchText || h.entry.englishText.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   return (
     <div className="flex h-screen bg-background">
@@ -100,37 +113,52 @@ export default function History() {
             ) : (
               <>
                 {/* 标题区域 */}
-                <div className="flex items-center justify-between mb-8">
-                  <div>
-                    <h2 className="text-3xl font-bold tracking-tight mb-2">
-                      查询历史
-                    </h2>
-                    <p className="text-muted-foreground">
-                      {histories && histories.length > 0 
-                        ? `共 ${histories.length} 条记录`
-                        : "暂无查询记录"
-                      }
-                    </p>
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-3xl font-bold tracking-tight mb-2">
+                        查询历史
+                      </h2>
+                      <p className="text-muted-foreground">
+                        {histories && histories.length > 0 
+                          ? `共 ${histories.length} 条记录`
+                          : "暂无查询记录"
+                        }
+                      </p>
+                    </div>
+                    {histories && histories.length > 0 && (
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={handleClearAll}
+                        disabled={clearMutation.isPending}
+                      >
+                        {clearMutation.isPending ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            清空中
+                          </>
+                        ) : (
+                          <>
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            清空全部
+                          </>
+                        )}
+                      </Button>
+                    )}
                   </div>
+
+                  {/* 搜索过滤框 */}
                   {histories && histories.length > 0 && (
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={handleClearAll}
-                      disabled={clearMutation.isPending}
-                    >
-                      {clearMutation.isPending ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          清空中
-                        </>
-                      ) : (
-                        <>
-                          <Trash2 className="w-4 h-4 mr-2" />
-                          清空全部
-                        </>
-                      )}
-                    </Button>
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input
+                        placeholder="搜索历史记录..."
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                        className="pl-10"
+                      />
+                    </div>
                   )}
                 </div>
 
@@ -138,9 +166,9 @@ export default function History() {
                   <div className="flex items-center justify-center py-20">
                     <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
                   </div>
-                ) : histories && histories.length > 0 ? (
+                ) : filteredHistories && filteredHistories.length > 0 ? (
                   <div className="space-y-3">
-                    {histories.map((history: any) => (
+                    {filteredHistories.map((history: any) => (
                       <Card 
                         key={history.id}
                         className="hover:shadow-md transition-shadow"
@@ -174,11 +202,24 @@ export default function History() {
                           </div>
                         </CardHeader>
                         <CardContent className="pt-0">
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <HistoryIcon className="w-3 h-3" />
-                            <span>
-                              {format(new Date(history.queryTime), "yyyy年MM月dd日 HH:mm", { locale: zhCN })}
-                            </span>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <HistoryIcon className="w-3 h-3" />
+                              <span>
+                                {format(new Date(history.queryTime), "yyyy年MM月dd日 HH:mm", { locale: zhCN })}
+                              </span>
+                            </div>
+                            {history.entry && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleQuickSearch(history.entry.englishText)}
+                                className="h-8"
+                              >
+                                <Search className="w-3 h-3 mr-1" />
+                                重新查询
+                              </Button>
+                            )}
                           </div>
                         </CardContent>
                       </Card>

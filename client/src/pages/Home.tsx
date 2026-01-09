@@ -14,17 +14,35 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Search, User, Plus, Loader2, Info, LogOut } from "lucide-react";
+import { Search, User, Plus, Loader2, Info, LogOut, Volume2 } from "lucide-react";
 import { Sidebar } from "@/components/Sidebar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
+import { smartSpeak } from "@/lib/pronunciation";
+import { useLocation } from "wouter";
 
 export default function Home() {
   const { user, isAuthenticated } = useAuth();
+  const [location] = useLocation();
   const [searchText, setSearchText] = useState("");
   const [searchResult, setSearchResult] = useState<any>(null);
   const [shouldSearch, setShouldSearch] = useState(false);
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  // 支持URL参数自动查询
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get('q');
+    if (query) {
+      setSearchText(query);
+      setShouldSearch(true);
+      // 清除URL参数
+      window.history.replaceState({}, '', '/');
+    }
+  }, [location]);
   
   // 提交谐音对话框状态
   const [isHomophoneDialogOpen, setIsHomophoneDialogOpen] = useState(false);
@@ -35,6 +53,15 @@ export default function Home() {
   const { data: searchData, isLoading } = trpc.translation.search.useQuery(
     { text: searchText.trim() },
     { enabled: shouldSearch && searchText.trim().length > 0 }
+  );
+
+  // 自动补全查询
+  const { data: autocompleteData } = trpc.translation.autocomplete.useQuery(
+    { prefix: searchText.trim() },
+    { 
+      enabled: searchText.trim().length >= 2 && !shouldSearch,
+      staleTime: 5000, // 5秒缓存
+    }
   );
 
   const createHomophoneMutation = trpc.homophone.create.useMutation({
@@ -58,15 +85,20 @@ export default function Home() {
     },
   });
 
-  const handleSearch = () => {
-    if (!searchText.trim()) {
+  const handleSearch = (word?: string) => {
+    const textToSearch = word || searchText;
+    if (!textToSearch.trim()) {
       toast.error("请输入要查询的单词或短语");
       return;
     }
-    if (searchText.length > 50) {
+    if (textToSearch.length > 50) {
       toast.error("请输入50字符内的单词或短句");
       return;
     }
+    if (word) {
+      setSearchText(word);
+    }
+    setShowAutocomplete(false);
     setShouldSearch(true);
     setSearchResult(null);
   };
@@ -176,17 +208,61 @@ export default function Home() {
               )}
 
               {/* 搜索框 */}
-              <div className="flex gap-2">
-                <Input
-                  placeholder="输入英语单词或短语"
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                  className="text-base h-12"
-                  disabled={isLoading}
-                />
+              <div className="relative flex gap-2">
+                <div className="flex-1 relative">
+                  <Input
+                    placeholder="输入英语单词或短语"
+                    value={searchText}
+                    onChange={(e) => {
+                      setSearchText(e.target.value);
+                      setShowAutocomplete(e.target.value.trim().length >= 2);
+                      setSelectedIndex(-1);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        if (selectedIndex >= 0 && autocompleteData && autocompleteData[selectedIndex]) {
+                          handleSearch(autocompleteData[selectedIndex].englishText);
+                        } else {
+                          handleSearch();
+                        }
+                      } else if (e.key === "ArrowDown" && autocompleteData) {
+                        e.preventDefault();
+                        setSelectedIndex((prev) => Math.min(prev + 1, autocompleteData.length - 1));
+                      } else if (e.key === "ArrowUp" && autocompleteData) {
+                        e.preventDefault();
+                        setSelectedIndex((prev) => Math.max(prev - 1, -1));
+                      } else if (e.key === "Escape") {
+                        setShowAutocomplete(false);
+                      }
+                    }}
+                    onFocus={() => searchText.trim().length >= 2 && setShowAutocomplete(true)}
+                    onBlur={() => setTimeout(() => setShowAutocomplete(false), 200)}
+                    className="text-base h-12"
+                    disabled={isLoading}
+                  />
+                  
+                  {/* 自动补全下拉列表 */}
+                  {showAutocomplete && autocompleteData && autocompleteData.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-popover border rounded-md shadow-lg z-50 max-h-80 overflow-auto">
+                      {autocompleteData.map((item: any, index: number) => (
+                        <button
+                          key={item.id}
+                          className={`w-full text-left px-4 py-3 hover:bg-accent transition-colors border-b last:border-b-0 ${
+                            index === selectedIndex ? "bg-accent" : ""
+                          }`}
+                          onClick={() => handleSearch(item.englishText)}
+                        >
+                          <div className="font-medium text-sm">{item.englishText}</div>
+                          <div className="text-xs text-muted-foreground line-clamp-1">
+                            {item.chineseTranslation}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <Button 
-                  onClick={handleSearch} 
+                  onClick={() => handleSearch()} 
                   size="lg" 
                   disabled={isLoading} 
                   className="px-8 h-12"
@@ -211,9 +287,30 @@ export default function Home() {
                   <CardHeader className="pb-4">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <CardTitle className="text-2xl mb-2">
-                          {searchResult.entry.englishText}
-                        </CardTitle>
+                        <div className="flex items-center gap-3 mb-2">
+                          <CardTitle className="text-2xl">
+                            {searchResult.entry.englishText}
+                          </CardTitle>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={async () => {
+                              setIsSpeaking(true);
+                              try {
+                                await smartSpeak(searchResult.entry.englishText, 'us');
+                              } catch (error) {
+                                toast.error('发音失败，请检查浏览器设置');
+                              } finally {
+                                setIsSpeaking(false);
+                              }
+                            }}
+                            disabled={isSpeaking}
+                            className="hover:bg-primary/10"
+                            title="播放发音（美式）"
+                          >
+                            <Volume2 className={`w-5 h-5 ${isSpeaking ? 'animate-pulse text-primary' : ''}`} />
+                          </Button>
+                        </div>
                         {searchResult.categoryPath && (
                           <p className="text-sm text-muted-foreground">
                             {searchResult.categoryPath}

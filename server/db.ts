@@ -199,6 +199,27 @@ export async function searchEnglishEntry(text: string) {
   return result.length > 0 ? result[0] : null;
 }
 
+/**
+ * 根据前缀搜索英语词条（用于自动补全）
+ */
+export async function searchEnglishEntriesByPrefix(prefix: string, limit: number = 10) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const result = await db
+    .select({
+      id: englishEntries.id,
+      englishText: englishEntries.englishText,
+      chineseTranslation: englishEntries.chineseTranslation,
+    })
+    .from(englishEntries)
+    .where(like(englishEntries.englishText, `${prefix}%`))
+    .orderBy(englishEntries.queryCount, desc(englishEntries.queryCount))
+    .limit(limit);
+
+  return result;
+}
+
 export async function getEnglishEntryById(id: number) {
   const db = await getDb();
   if (!db) return null;

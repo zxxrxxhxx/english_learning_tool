@@ -8,6 +8,7 @@ import * as db from "./db";
 import { getEnglishEntriesWithPagination } from "./db-pagination";
 import { checkRateLimit, getClientIp, RateLimitPresets } from "./rate-limiter";
 import { sanitizeInput, detectSqlInjection, detectXss } from "./input-validator";
+import { generateLearningAdvice, recommendNextWords } from "./ai-learning-advisor";
 
 // 管理员权限中间件
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -120,6 +121,31 @@ export const appRouter = router({
       .input(z.object({ categoryId: z.number(), limit: z.number().default(20) }))
       .query(async ({ input }) => {
         return await db.getEntriesByCategoryId(input.categoryId, input.limit);
+      }),
+
+    // 搜索自动补全
+    autocomplete: publicProcedure
+      .input(z.object({ prefix: z.string().min(1).max(50) }))
+      .query(async ({ input, ctx }) => {
+        // API限流检查
+        const clientIp = getClientIp(ctx.req);
+        const rateLimit = checkRateLimit(clientIp, RateLimitPresets.search);
+        
+        if (!rateLimit.allowed) {
+          throw new TRPCError({
+            code: "TOO_MANY_REQUESTS",
+            message: "请求过于频繁，请稍后再试",
+          });
+        }
+
+        // 输入验证
+        const sanitizedPrefix = sanitizeInput(input.prefix);
+        if (detectSqlInjection(sanitizedPrefix) || detectXss(sanitizedPrefix)) {
+          return [];
+        }
+
+        // 查询匹配的单词（前10个）
+        return await db.searchEnglishEntriesByPrefix(sanitizedPrefix.trim().toLowerCase(), 10);
       }),
   }),
 
@@ -523,6 +549,21 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         await db.updateUserDisabledStatus(input.userId, input.isDisabled);
         return { success: true };
+      }),
+  }),
+
+  // ==================== AI学习建议 ====================
+  learning: router({
+    // 获取个性化学习建议
+    getAdvice: protectedProcedure.query(async ({ ctx }) => {
+      return await generateLearningAdvice(ctx.user.id);
+    }),
+
+    // 推荐下一个应该学习的单词
+    recommendWords: protectedProcedure
+      .input(z.object({ limit: z.number().default(5) }))
+      .query(async ({ ctx, input }) => {
+        return await recommendNextWords(ctx.user.id, input.limit);
       }),
   }),
 
